@@ -1,0 +1,142 @@
+---
+title: "EDA Lab Assignment"
+author: "Russell Chan"
+date: '2023-05-01'
+output:
+  html_document: default
+  word_document: default
+---
+
+EDA with Python in R
+
+
+```{r}
+setwd("C:/Users/macho/Desktop/Git_Repo/EDA-Lab-Assignment/EDA_Python/data")
+house <- read.csv("ames.csv")
+house
+```
+```{r}
+library(ggplot2)
+mean_price <- mean(house$SalePrice)
+ggplot(data = house, aes(x = SalePrice)) + 
+  geom_histogram(bins = 50,fill = "blue") +
+  labs(x = "Sale Price ($)",
+       y = "Number of Houses",
+       title = "Distribution of Housing Sale Prices") +
+geom_vline(xintercept = mean_price, color = "black", linetype = "solid", size =1)
+
+```
+
+```{r}
+mean_price <- mean(house$SalePrice)
+median_price <- median(house$SalePrice)
+sd_price <- sd(house$SalePrice)
+mean_price
+median_price
+sd_price
+```
+
+```{r}
+mean_rooms <- mean(house$TotRmsAbvGrd)
+ggplot(data = house, aes(x = TotRmsAbvGrd)) + 
+  geom_histogram(bins = 15, color = "white", fill = "blue") +
+  labs(x = "Total Rooms Above Grade",
+       y = "Number of Houses",
+       title = "Distribution of Total Rooms Above Grade")+
+geom_vline(xintercept = mean_rooms, color = "black", linetype = "solid", size =1)
+```
+
+```{r}
+mean_rooms <- mean(house$TotRmsAbvGrd)
+median_rooms <- median(house$TotRmsAbvGrd)
+sd_rooms <- sd(house$TotRmsAbvGrd)
+mean_rooms
+median_rooms
+sd_rooms
+```
+
+```{r}
+mean_cond <- mean(house$OverallCond)
+ggplot(data = house, aes(x = OverallCond)) + 
+  geom_histogram(bins = 9, color = "white", fill = "blue") +
+  labs(x = "Overall Condition",
+       y = "Number of Houses",
+       title = "Distribution of Overall Condition of Houses")+
+  geom_vline(xintercept = mean_cond, color = "black", linetype = "solid", size =1)
+```
+
+```{r}
+mean_cond <- mean(house$OverallCond)
+median_cond <- median(house$OverallCond)
+sd_cond <- sd(house$OverallCond)
+mean_cond
+median_cond
+sd_cond
+```
+
+```{r}
+# Create custom bins so all histograms are on the same scale
+bins <- seq(min(house$SalePrice), max(house$SalePrice), length.out = 80)
+
+# Plot three histograms, with different colors and reduced opacity
+hist(house$SalePrice[house$OverallCond < 5], 
+     col = "yellow", 
+     xlim = c(min(house$SalePrice), max(house$SalePrice)), 
+     ylim = c(0,80),
+     breaks = bins, 
+     main = "Distributions of Sale Price Grouped by Condition",
+     xlab = "Sale Price",
+     ylab = "Number of Houses",
+     alpha = 0.5)
+hist(house$SalePrice[house$OverallCond == 5], 
+     col = "gray", 
+     add = TRUE, 
+     breaks = bins, 
+     alpha = 0.5)
+hist(house$SalePrice[house$OverallCond > 5], 
+     col = "cyan", 
+     add = TRUE, 
+     breaks = bins, 
+     alpha = 0.5)
+
+# Add a legend
+legend("topright", 
+       legend = c("Below Average Condition", "Average Condition", "Above Average Condition"), 
+       fill = c("yellow", "gray", "cyan"))
+       
+```
+```{r}
+# Create a new column for Age
+house$Age <- house$YrSold - house$YearBuilt
+
+# Set up plot
+plot(house$Age, house$SalePrice, pch = 20, col = "green", alpha = 0.3, 
+     xlab = "Age of Home at Time of Sale", ylab = "Sale Price",
+     main = "Home Age vs. Sale Price")
+
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
